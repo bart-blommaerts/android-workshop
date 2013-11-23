@@ -7,7 +7,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import be.hp.workshop.dummy.DummyContent;
+import be.hp.workshop.data.model.BrownBag;
+import be.hp.workshop.data.model.BrownBagItems;
 
 /**
  * A list fragment representing a list of Items. This fragment
@@ -70,12 +71,12 @@ public class ItemListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+
+        setListAdapter(new ArrayAdapter<BrownBag>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                DummyContent.ITEMS));
+                BrownBagItems.ITEMS));
     }
 
     @Override
@@ -115,7 +116,7 @@ public class ItemListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(BrownBagItems.ITEMS.get(position).getId());
     }
 
     @Override

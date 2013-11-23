@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import be.hp.workshop.data.service.BrownBagService;
+
 
 /**
  * An activity representing a list of Items. This activity
@@ -35,6 +37,8 @@ public class ItemListActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
+        getBrownBagContent();
+
         if (findViewById(R.id.item_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
@@ -50,6 +54,12 @@ public class ItemListActivity extends FragmentActivity
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
+    }
+
+    private void getBrownBagContent() {
+        BrownBagService brownBagService = new BrownBagService();
+
+        brownBagService.findAll(this.getBaseContext());
     }
 
     /**
