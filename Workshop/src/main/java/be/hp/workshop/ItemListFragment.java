@@ -3,12 +3,21 @@ package be.hp.workshop;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import be.hp.workshop.data.model.BrownBag;
 import be.hp.workshop.data.model.BrownBagItems;
+import be.hp.workshop.data.service.BrownBagService;
 
 /**
  * A list fragment representing a list of Items. This fragment
@@ -21,22 +30,13 @@ import be.hp.workshop.data.model.BrownBagItems;
  */
 public class ItemListFragment extends ListFragment {
 
-    /**
-     * The serialization (saved instance state) Bundle key representing the
-     * activated item position. Only used on tablets.
-     */
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
-
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
     private Callbacks mCallbacks = sDummyCallbacks;
-
-    /**
-     * The current activated item position. Only used on tablets.
-     */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private BrownBagService brownBagService = new BrownBagService();
+    private SimpleAdapter adapter;
+    private List<Map<String,String>> brownBagListWithImages;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -44,9 +44,6 @@ public class ItemListFragment extends ListFragment {
      * selections.
      */
     public interface Callbacks {
-        /**
-         * Callback for when an item has been selected.
-         */
         public void onItemSelected(String id);
     }
 
@@ -60,23 +57,33 @@ public class ItemListFragment extends ListFragment {
         }
     };
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public ItemListFragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        brownBagListWithImages = getBrownBagListWithImages();
 
+        // Keys used in Hashmap
+        String[] from = { "image","title" };
 
-        setListAdapter(new ArrayAdapter<BrownBag>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                BrownBagItems.ITEMS));
+        // Ids of views in listview_layout
+        int[] to = { R.id.brown_bag_image,R.id.brown_bag_title};
+
+        adapter = new SimpleAdapter(getActivity().getBaseContext(), brownBagListWithImages, R.layout.listview_layout, from, to);
+
+        setListAdapter(adapter);
+
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        brownBagListWithImages.clear();
+        brownBagListWithImages.addAll(getBrownBagListWithImages());
+
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 
     @Override
@@ -148,5 +155,39 @@ public class ItemListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    private List<Map<String,String>> getBrownBagListWithImages() {
+        getBrownBagContent();
+
+        List<Map<String,String>> aList = new ArrayList<Map<String, String>>();
+
+        List<Integer> imageList = getHardcodedImageList();
+
+        for (BrownBag brownBag : BrownBagItems.ITEMS) {
+            Map<String, String> hm = new LinkedHashMap<String, String>();
+            hm.put("image", Integer.toString(imageList.get(brownBag.getImageId())));
+            hm.put("title", brownBag.getTitle());
+            aList.add(hm);
+        }
+
+        return aList;
+    }
+
+    private void getBrownBagContent() {
+        brownBagService.findAll(getActivity().getBaseContext());
+    }
+
+    // some hardcoded images from http://dryicons.com/free-icons/preview/colorful-stickers-part-5-icons-set/
+    private List<Integer> getHardcodedImageList() {
+        List<Integer> imageList = new LinkedList<Integer>();
+
+        imageList.add(0, R.drawable.box);
+        imageList.add(1, R.drawable.empty_calendar);
+        imageList.add(2, R.drawable.full_screen);
+        imageList.add(3, R.drawable.megaphone);
+        imageList.add(4, R.drawable.wired);
+
+        return imageList;
     }
 }

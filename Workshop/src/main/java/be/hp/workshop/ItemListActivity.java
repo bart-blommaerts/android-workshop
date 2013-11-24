@@ -6,10 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-
-import be.hp.workshop.data.service.BrownBagService;
 
 
 /**
@@ -31,17 +27,12 @@ import be.hp.workshop.data.service.BrownBagService;
 public class ItemListActivity extends FragmentActivity
         implements ItemListFragment.Callbacks {
 
-
     private boolean mTwoPane;
-
-    private BrownBagService brownBagService = new BrownBagService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
-
-        getBrownBagContent();
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
@@ -52,11 +43,6 @@ public class ItemListActivity extends FragmentActivity
                     .findFragmentById(R.id.item_list))
                     .setActivateOnItemClick(true);
         }
-
-    }
-
-    private void getBrownBagContent() {
-        brownBagService.findAll(this.getBaseContext());
     }
 
     @Override
@@ -103,16 +89,5 @@ public class ItemListActivity extends FragmentActivity
             detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        getBrownBagContent();
-
-        ItemListFragment fragment = (ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list);
-        ListAdapter listAdapter = fragment.getListAdapter();
-        ((ArrayAdapter) listAdapter).notifyDataSetChanged();
-
-        super.onResume();
     }
 }

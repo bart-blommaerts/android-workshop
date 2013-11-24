@@ -24,6 +24,13 @@ public class BrownBagService {
         values.put(BrownBagContract.COLUMN_NAME_TITLE, brownBag.getTitle());
         values.put(BrownBagContract.COLUMN_NAME_CONTENT, brownBag.getContent());
 
+        // temporary
+        if (brownBag.getImageId() == null) {
+            brownBag.setImageId(1);
+        }
+
+        values.put(BrownBagContract.COLUMN_NAME_IMAGE_ID, brownBag.getImageId());
+
         db.insert(
                 BrownBagContract.TABLE_NAME,
                 null,
@@ -39,7 +46,8 @@ public class BrownBagService {
                 new String[] {                                   // The columns to return
                         BrownBagContract._ID,
                         BrownBagContract.COLUMN_NAME_TITLE,
-                        BrownBagContract.COLUMN_NAME_CONTENT},
+                        BrownBagContract.COLUMN_NAME_CONTENT,
+                        BrownBagContract.COLUMN_NAME_IMAGE_ID},
                 null,                                            // The columns for the WHERE clause
                 null,                                            // The values for the WHERE clause
                 null,                                            // don't group the rows
@@ -51,14 +59,15 @@ public class BrownBagService {
     }
 
     private void fillBrownBagItems(Cursor cursor) {
-        BrownBagItems brownBagItems = new BrownBagItems();
+        BrownBagItems.removeAll();
 
         while (cursor.moveToNext()) {
             String id = cursor.getString(cursor.getColumnIndexOrThrow(BrownBagContract._ID));
             String title = cursor.getString(cursor.getColumnIndexOrThrow(BrownBagContract.COLUMN_NAME_TITLE));
             String content = cursor.getString(cursor.getColumnIndexOrThrow(BrownBagContract.COLUMN_NAME_CONTENT));
+            Integer imageId = cursor.getInt(cursor.getColumnIndexOrThrow(BrownBagContract.COLUMN_NAME_IMAGE_ID));
 
-            BrownBag brownBag = new BrownBag(id, title, content);
+            BrownBag brownBag = new BrownBag(id, title, content, imageId);
 
             BrownBagItems.addItem(brownBag);
         }

@@ -49,7 +49,7 @@ public class AddBrownBagActivity extends Activity {
         @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
-                BrownBag brownBag = new BrownBag(null, mTitle, mContent);
+                BrownBag brownBag = new BrownBag(null, mTitle, mContent, null);
                 BrownBagService brownBagService = new BrownBagService();
                 brownBagService.insert(AddBrownBagActivity.this.getBaseContext(), brownBag);
 

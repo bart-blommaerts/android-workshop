@@ -7,11 +7,21 @@ public class BrownBag {
     private String id;
     private String title;
     private String content;
+    private Integer imageId;
 
-    public BrownBag(String id, String title, String content) {
+    public Integer getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Integer imageId) {
+        this.imageId = imageId;
+    }
+
+    public BrownBag(String id, String title, String content, Integer imageId) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.imageId = imageId;
     }
 
     public String getId() {
