@@ -3,6 +3,11 @@ package be.hp.workshop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 
 import be.hp.workshop.data.service.BrownBagService;
 
@@ -26,11 +31,10 @@ import be.hp.workshop.data.service.BrownBagService;
 public class ItemListActivity extends FragmentActivity
         implements ItemListFragment.Callbacks {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
+
     private boolean mTwoPane;
+
+    private BrownBagService brownBagService = new BrownBagService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +44,6 @@ public class ItemListActivity extends FragmentActivity
         getBrownBagContent();
 
         if (findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
 
             // In two-pane mode, list items should be given the
@@ -53,13 +53,29 @@ public class ItemListActivity extends FragmentActivity
                     .setActivateOnItemClick(true);
         }
 
-        // TODO: If exposing deep links into your app, handle intents here.
     }
 
     private void getBrownBagContent() {
-        BrownBagService brownBagService = new BrownBagService();
-
         brownBagService.findAll(this.getBaseContext());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_new:
+                Intent intent = new Intent(this, AddBrownBagActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -87,5 +103,16 @@ public class ItemListActivity extends FragmentActivity
             detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        getBrownBagContent();
+
+        ItemListFragment fragment = (ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list);
+        ListAdapter listAdapter = fragment.getListAdapter();
+        ((ArrayAdapter) listAdapter).notifyDataSetChanged();
+
+        super.onResume();
     }
 }

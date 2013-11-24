@@ -2,6 +2,11 @@
 <resources>
 
     <string name="app_name">Workshop</string>
-    <string name="title_item_detail">Item Detail</string>
+    <string name="title_item_detail">Brown Bag Detail</string>
+
+    <!-- add brown bag -->
+    <string name="action_compose">Add brown bag</string>
+    <string name="title_activity_add_brown_bag">Add a new brown bag</string>
+    <string name="add_brown_bag_save">Save</string>
 
 </resources>
