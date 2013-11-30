@@ -10,5 +10,9 @@
     <string name="add_brown_bag_save">Save</string>
     <string name="add_brown_bag_add_image">Add Image</string>
 
+    <!-- shake shake_dialog -->
+    <string name="dialog_text">Thank you for shaking</string>
+    <string name="dialog_text_stop">Stop shaking</string>
+
 
 </resources>

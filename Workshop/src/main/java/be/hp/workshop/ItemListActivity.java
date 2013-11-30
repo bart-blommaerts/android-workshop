@@ -1,11 +1,16 @@
 package be.hp.workshop;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import be.hp.workshop.util.Shaker;
 
 
 /**
@@ -25,9 +30,11 @@ import android.view.MenuItem;
  * to listen for item selections.
  */
 public class ItemListActivity extends FragmentActivity
-        implements ItemListFragment.Callbacks {
+        implements ItemListFragment.Callbacks, Shaker.Callbacks {
 
     private boolean mTwoPane;
+    private Shaker shaker;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,8 @@ public class ItemListActivity extends FragmentActivity
                     .findFragmentById(R.id.item_list))
                     .setActivateOnItemClick(true);
         }
+
+       shaker = new Shaker(getBaseContext(), 3.0d, 0, this);
     }
 
     @Override
@@ -89,5 +98,37 @@ public class ItemListActivity extends FragmentActivity
             detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public void shakingStarted() {
+        // do something
+    }
+
+    @Override
+    public void shakingStopped() {
+        LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(inflater.inflate(R.layout.shake_dialog, null));
+
+        builder.setMessage(R.string.dialog_text)
+                .setPositiveButton(R.string.dialog_text_stop, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // do something
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
+
+        shaker.close();
+    }
+
+    @Override
+    protected void onPause() {
+        shaker.close();
+        if (dialog != null) dialog.dismiss();
+        super.onPause();
     }
 }
