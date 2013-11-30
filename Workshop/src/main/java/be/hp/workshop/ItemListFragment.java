@@ -11,13 +11,13 @@ import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import be.hp.workshop.data.model.BrownBag;
 import be.hp.workshop.data.model.BrownBagItems;
 import be.hp.workshop.data.service.BrownBagService;
+import be.hp.workshop.util.HardcodedImages;
 
 /**
  * A list fragment representing a list of Items. This fragment
@@ -162,7 +162,7 @@ public class ItemListFragment extends ListFragment {
 
         List<Map<String,String>> aList = new ArrayList<Map<String, String>>();
 
-        List<Integer> imageList = getHardcodedImageList();
+        List<Integer> imageList = HardcodedImages.getHardcodedImageList();
 
         for (BrownBag brownBag : BrownBagItems.ITEMS) {
             Map<String, String> hm = new LinkedHashMap<String, String>();
@@ -176,18 +176,5 @@ public class ItemListFragment extends ListFragment {
 
     private void getBrownBagContent() {
         brownBagService.findAll(getActivity().getBaseContext());
-    }
-
-    // some hardcoded images from http://dryicons.com/free-icons/preview/colorful-stickers-part-5-icons-set/
-    private List<Integer> getHardcodedImageList() {
-        List<Integer> imageList = new LinkedList<Integer>();
-
-        imageList.add(0, R.drawable.box);
-        imageList.add(1, R.drawable.empty_calendar);
-        imageList.add(2, R.drawable.full_screen);
-        imageList.add(3, R.drawable.megaphone);
-        imageList.add(4, R.drawable.wired);
-
-        return imageList;
     }
 }

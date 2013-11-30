@@ -1,14 +1,17 @@
 package be.hp.workshop;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import be.hp.workshop.data.model.BrownBag;
 import be.hp.workshop.data.model.BrownBagItems;
+import be.hp.workshop.util.HardcodedImages;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -55,6 +58,9 @@ public class ItemDetailFragment extends Fragment {
         // Show the content as text in a TextView.
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.getContent());
+            Integer imageResourceId = HardcodedImages.getHardcodedImageList().get(mItem.getImageId());
+            Drawable imageDrawable = getResources().getDrawable(imageResourceId);
+            ((ImageView) rootView.findViewById(R.id.item_detail_image)).setImageDrawable(imageDrawable);
         }
 
         return rootView;
