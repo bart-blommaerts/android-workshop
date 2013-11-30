@@ -8,6 +8,15 @@ public class BrownBag {
     private String title;
     private String content;
     private Integer imageId;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public Integer getImageId() {
         return imageId;
@@ -17,11 +26,12 @@ public class BrownBag {
         this.imageId = imageId;
     }
 
-    public BrownBag(String id, String title, String content, Integer imageId) {
+    public BrownBag(String id, String title, String content, Integer imageId, String imageUrl) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.imageId = imageId;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {

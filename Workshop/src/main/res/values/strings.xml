@@ -8,5 +8,7 @@
     <string name="action_compose">Add brown bag</string>
     <string name="title_activity_add_brown_bag">Add a new brown bag</string>
     <string name="add_brown_bag_save">Save</string>
+    <string name="add_brown_bag_add_image">Add Image</string>
+
 
 </resources>

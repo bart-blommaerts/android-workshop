@@ -11,13 +11,15 @@ public class BrownBagContract implements BaseColumns {
     public static final String COLUMN_NAME_TITLE = "title";
     public static final String COLUMN_NAME_CONTENT = "content";
     public static final String COLUMN_NAME_IMAGE_ID = "image_id";
+    public static final String COLUMN_NAME_IMAGE_URL = "image_url";
 
     public static final String SQL_CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_NAME_TITLE + " TEXT," +
                     COLUMN_NAME_CONTENT + " TEXT," +
-                    COLUMN_NAME_IMAGE_ID + " TEXT" +
+                    COLUMN_NAME_IMAGE_ID + " TEXT," +
+                    COLUMN_NAME_IMAGE_URL + " TEXT" +
                     " )";
 
     public static final String SQL_DROP_TABLE =

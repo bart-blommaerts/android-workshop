@@ -1,5 +1,7 @@
 package be.hp.workshop;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -55,12 +57,22 @@ public class ItemDetailFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_item_detail, container, false);
 
-        // Show the content as text in a TextView.
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.getContent());
-            Integer imageResourceId = HardcodedImages.getHardcodedImageList().get(mItem.getImageId());
-            Drawable imageDrawable = getResources().getDrawable(imageResourceId);
-            ((ImageView) rootView.findViewById(R.id.item_detail_image)).setImageDrawable(imageDrawable);
+            ImageView itemDetailImage = (ImageView) rootView.findViewById(R.id.item_detail_image);
+            String imageUrl = mItem.getImageUrl();
+
+            if (imageUrl != null && !imageUrl.equals("")) {
+                // get picture
+                Bitmap picture = BitmapFactory.decodeFile(imageUrl);
+                itemDetailImage.setImageBitmap(picture);
+            } else {
+                // get drawable
+                Integer imageResourceId = HardcodedImages.getHardcodedImageList().get(mItem.getImageId());
+                Drawable imageDrawable = getResources().getDrawable(imageResourceId);
+
+                itemDetailImage.setImageDrawable(imageDrawable);
+            }
         }
 
         return rootView;

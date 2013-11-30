@@ -23,13 +23,8 @@ public class BrownBagService {
         ContentValues values = new ContentValues();
         values.put(BrownBagContract.COLUMN_NAME_TITLE, brownBag.getTitle());
         values.put(BrownBagContract.COLUMN_NAME_CONTENT, brownBag.getContent());
-
-        // temporary
-        if (brownBag.getImageId() == null) {
-            brownBag.setImageId(1);
-        }
-
         values.put(BrownBagContract.COLUMN_NAME_IMAGE_ID, brownBag.getImageId());
+        values.put(BrownBagContract.COLUMN_NAME_IMAGE_URL, brownBag.getImageUrl());
 
         db.insert(
                 BrownBagContract.TABLE_NAME,
@@ -47,7 +42,8 @@ public class BrownBagService {
                         BrownBagContract._ID,
                         BrownBagContract.COLUMN_NAME_TITLE,
                         BrownBagContract.COLUMN_NAME_CONTENT,
-                        BrownBagContract.COLUMN_NAME_IMAGE_ID},
+                        BrownBagContract.COLUMN_NAME_IMAGE_ID,
+                        BrownBagContract.COLUMN_NAME_IMAGE_URL},
                 null,                                            // The columns for the WHERE clause
                 null,                                            // The values for the WHERE clause
                 null,                                            // don't group the rows
@@ -66,8 +62,9 @@ public class BrownBagService {
             String title = cursor.getString(cursor.getColumnIndexOrThrow(BrownBagContract.COLUMN_NAME_TITLE));
             String content = cursor.getString(cursor.getColumnIndexOrThrow(BrownBagContract.COLUMN_NAME_CONTENT));
             Integer imageId = cursor.getInt(cursor.getColumnIndexOrThrow(BrownBagContract.COLUMN_NAME_IMAGE_ID));
+            String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(BrownBagContract.COLUMN_NAME_IMAGE_URL));
 
-            BrownBag brownBag = new BrownBag(id, title, content, imageId);
+            BrownBag brownBag = new BrownBag(id, title, content, imageId, imageUrl);
 
             BrownBagItems.addItem(brownBag);
         }
